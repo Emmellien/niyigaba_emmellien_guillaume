@@ -1,0 +1,11 @@
+{
+  "name": "niyigaba_emmellien_guillaume",
+  "version": "1.0.0",
+  "description": "NIYIGABA_Emmellien_Guillaume",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NIYIGABA Emmellien Guillaume",
+  "license": "ISC"
+}
