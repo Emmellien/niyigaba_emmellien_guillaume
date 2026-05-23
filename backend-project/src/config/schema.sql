@@ -6,3 +6,10 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE Product(
+    Product_id int Auto_increment PRIMARY KEY,
+    name varchar(255) not null,
+    price decimal(10,2) not null,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

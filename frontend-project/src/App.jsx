@@ -9,6 +9,7 @@ import Component1 from "./pages/Component1";
 import Component2 from "./pages/Component2";
 import Component3 from "./pages/Component3";
 import Report from "./pages/Report";
+import Product from "./pages/Product";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+          
 
         <Route
           path="/dashboard"
@@ -64,6 +66,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Report />
+            </ProtectedRoute>
+          }
+        />
+
+         <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <Product />
             </ProtectedRoute>
           }
         />
