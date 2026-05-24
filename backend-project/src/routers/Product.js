@@ -1,75 +1,83 @@
-const express=require('express');
-const db = require('../config/db.js');
-const router= express.Router();
+const express = require("express");
+const router = express.Router();
+const db = require("../config/db");
 
-// Get all products
-router.get('/', async (req, res) => {
-    try {
-        const [products] = await db.query('SELECT * FROM Product');
-        res.json(products);
-        
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-        
-    }
-});
-
-router.post('/', async (req, res) => {
-    const { name, price } = req.body;
-    try {
-        const insertsql = `INSERT INTO Product(name,price) values(?,?) `;
-        const [result] = await db.query(insertsql, [name, price]);
-        res.status(201).json({ id: result.insertId, name, price }); 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-//get id
-router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const [products] = await db.query('SELECT * FROM product WHERE Product_id = ?', [id]);
-        res.json(products);
-        
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-        
-    }
-});
-
-//delete
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const [result] = await db.query('DELETE FROM Product WHERE Product_id = ?', [id]);
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-        res.json({ message: 'Product deleted' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-router.put('/:id', async (req, res) => {
-    const { id } = req.params;
-    const { name, price } = req.body;
-    try {
-        const [result] = await db.query('UPDATE Product SET name = ?, price = ? WHERE Product_id = ?', [name, price, id]);
-       if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    res.json({ message: "Product updated" });
+// GET ALL PRODUCTS
+router.get("/", async (req, res) => {
+  try {
+    const [data] = await db.query("SELECT * FROM Product ORDER BY Product_id DESC");
+    res.json(data);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-module.exports= router
+// ADD PRODUCT
+router.post("/", async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    const [result] = await db.query(
+      "INSERT INTO Product(name) VALUES (?)",
+      [name]
+    );
+
+    res.status(201).json({
+      Product_id: result.insertId,
+      name
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// GET BY ID
+router.get("/:id", async (req, res) => {
+  try {
+    const [data] = await db.query(
+      "SELECT * FROM Product WHERE Product_id = ?",
+      [req.params.id]
+    );
+
+    res.json(data[0]);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// UPDATE
+router.put("/:id", async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    const [result] = await db.query(
+      "UPDATE Product SET name = ? WHERE Product_id = ?",
+      [name, req.params.id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    res.json({ message: "Updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// DELETE
+router.delete("/:id", async (req, res) => {
+  try {
+    await db.query("DELETE FROM Product WHERE Product_id = ?", [
+      req.params.id,
+    ]);
+
+    res.json({ message: "Deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+module.exports = router;

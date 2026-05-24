@@ -10,6 +10,9 @@ import Component2 from "./pages/Component2";
 import Component3 from "./pages/Component3";
 import Report from "./pages/Report";
 import Product from "./pages/Product";
+import StockIn from "./pages/StockIn";
+import StockOut from "./pages/StockOut";
+import ReportStock from "./pages/ReportStock";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -24,7 +27,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-          
+        <Route path="/stockin" element={<StockIn />} />
+        <Route path="/stockout" element={<StockOut />} />
+        <Route path="/report-stock" element={<ReportStock />} />
 
         <Route
           path="/dashboard"
